@@ -1,0 +1,59 @@
+name: Update addon data manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Data.lua
+      - PvPKompass.toc
+      - .github/workflows/publish-update-manifest.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Refresh version, date, data URL, and SHA-256
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import re
+
+          root = pathlib.Path.cwd()
+          toc = (root / "PvPKompass.toc").read_text(encoding="utf-8")
+          match = re.search(r"(?m)^## Version:\s*(\S+)\s*$", toc)
+          if not match:
+              raise SystemExit("PvPKompass.toc does not declare ## Version")
+
+          data = (root / "Data.lua").read_bytes()
+          manifest_path = root / "update-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          manifest["version"] = match.group(1)
+          manifest["updated"] = datetime.date.today().isoformat()
+          manifest["files"]["Data.lua"] = {
+              "url": f"https://raw.githubusercontent.com/{os.environ['REPOSITORY']}/main/Data.lua",
+              "sha256": hashlib.sha256(data).hexdigest(),
+          }
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Commit manifest when it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update addon data manifest"
+            git push
+          fi

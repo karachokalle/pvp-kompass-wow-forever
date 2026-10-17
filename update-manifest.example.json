@@ -1,0 +1,21 @@
+{
+  "addon": "PvPKompass",
+  "version": "0.5.0",
+  "updated": "YYYY-MM-DD",
+  "files": {
+    "Data.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Data.lua",
+      "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
+    }
+  },
+  "wowheadSources": [
+    {
+      "title": "Forever PvP Overview",
+      "url": "https://www.wowhead.com/forever/guide/pvp-overview-ranking-rewards"
+    },
+    {
+      "title": "Forever Guides",
+      "url": "https://www.wowhead.com/forever/guides"
+    }
+  ]
+}

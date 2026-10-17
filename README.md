@@ -11,9 +11,9 @@ Den heruntergeladenen Addon-Ordner in `World of Warcraft\_classic_\Interface\Add
 Im Addon auf **Daten aktualisieren** klicken, WoW vollständig schließen und `Update-PvPKompass.ps1` ausführen:
 
 ```powershell
-.\Update-PvPKompass.ps1 -ManifestUrl "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/update-manifest.json" -WowRoot "C:\Pfad\zu\World of Warcraft\_classic_"
+.\Update-PvPKompass.ps1 -WowRoot "C:\Pfad\zu\World of Warcraft\_classic_"
 ```
 
-Das Repository muss öffentlich sein, damit der Updater Manifest und `Data.lua` ohne GitHub-Anmeldung beziehen kann. Ersetze `OWNER` in der Beispieladresse durch deinen GitHub-Benutzernamen. Der Updater prüft den SHA-256-Wert und legt vor dem Austausch ein Backup der vorhandenen Datei an.
+Die Adresse des öffentlichen GitHub-Feeds ist im Updater hinterlegt. Der Updater prüft den SHA-256-Wert und legt vor dem Austausch ein Backup der vorhandenen Datei an.
 
-Wenn `Data.lua` oder die Addon-Version geändert wird, aktualisiert GitHub Actions das Manifest samt Prüfsumme. Für den Start das Repository `pvp-kompass-wow-forever` öffentlich mit dem Branch `main` anlegen und den Inhalt dieses Ordners hochladen. In GitHub unter **Settings → Actions → General → Workflow permissions** Schreibzugriff für den Workflow erlauben. Die Empfehlungen müssen weiterhin anhand der verlinkten Guides gepflegt werden; Wowhead stellt dafür keinen direkten Datenfeed im Addon-Format bereit.
+Wenn `Data.lua` oder die Addon-Version geändert wird, aktualisiert GitHub Actions das Manifest samt Prüfsumme. Die Empfehlungen müssen weiterhin anhand der verlinkten Guides gepflegt werden; dieser Workflow aktualisiert die Veröffentlichung der Daten und liest die Guides nicht automatisch aus.

@@ -1,7 +1,6 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $true)]
-    [Uri]$ManifestUrl,
+    [Uri]$ManifestUrl = 'https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/update-manifest.json',
 
     [Parameter(Mandatory = $true)]
     [string]$WowRoot,

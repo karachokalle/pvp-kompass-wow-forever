@@ -2,6 +2,8 @@
 
 Dieses Repository enthält das Addon und den Datenfeed für den externen Updater.
 
+Version **0.7.1** behebt das Laden der Talentbäume in Forever: Die aktuelle Konfiguration wird über `C_ClassTalents`/`C_SpecializationInfo.GetCombatConfigIDForSpecGroup` gelesen, Knoten und Talentgruppen über `C_Traits`. Positionen, Verbindungslinien, Ränge, Zauber-IDs und Icons stammen aus den tatsächlichen Forever-Daten. Die frühere reine Classic-Abfrage lieferte in Forever keine Bäume. Das Addon reagiert jetzt auf Trait-Ladeereignisse und bietet **Neu laden** mit einer konkreten Statusmeldung. Tooltips verwenden die vom Knoten gelieferte Zauber-ID. Grundlage ist Blizzards [Forever-Talentfenster](https://github.com/Gethe/wow-ui-source/blob/forever/Interface/AddOns/Blizzard_PlayerSpells/Camelot/ClassTalents/Blizzard_ClassTalentsFrame.lua) und die zugehörige [Trait-API](https://github.com/Gethe/wow-ui-source/blob/forever/Interface/AddOns/Blizzard_APIDocumentationGenerated/SharedTraitsDocumentation.lua).
+
 ## Talentbäume (Version 0.7.0)
 
 Der Reiter **Kern-Talente** zeigt alle drei Talentbäume nebeneinander, mit den vom Client gelieferten Icons, Reihen, Spalten und belegten/maximalen Rängen. In den vorhandenen Klassenguides ausdrücklich genannte Kern-Talente erhalten einen roten Rahmen, sofern ihr Name im Client zugeordnet werden kann. Das gilt auch für noch nicht erlernte Talente. Die Markierung ist eine Empfehlung und keine vollständige Punkteverteilung. Bei allgemeinen Empfehlungen ohne benannten Talentknoten wird kein Knoten erfunden.

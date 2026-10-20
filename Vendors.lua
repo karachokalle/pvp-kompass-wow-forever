@@ -189,7 +189,22 @@ local function AllVendors()
     local vendors, seen = {}, {}
     for _, seed in ipairs(catalog.vendors) do
         local cached = Cache()[seed.key]
-        vendors[#vendors + 1] = cached or seed
+        if cached and not cached.complete then
+            -- Older/incomplete local snapshots must not hide the shipped catalog.
+            local merged, items, itemIDs = {}, {}, {}
+            for key, value in pairs(seed) do merged[key] = value end
+            for key, value in pairs(cached) do merged[key] = value end
+            for _, item in ipairs(cached.items or {}) do
+                if item.itemID then items[#items + 1] = item; itemIDs[tonumber(item.itemID)] = true end
+            end
+            for _, item in ipairs(seed.items or {}) do
+                if not itemIDs[tonumber(item.itemID)] then items[#items + 1] = item end
+            end
+            merged.items = items
+            vendors[#vendors + 1] = merged
+        else
+            vendors[#vendors + 1] = cached or seed
+        end
         seen[seed.key] = true
     end
     for key, cached in pairs(Cache()) do

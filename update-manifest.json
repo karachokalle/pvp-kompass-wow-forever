@@ -13,7 +13,7 @@
     },
     "Vendors.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Vendors.lua",
-      "sha256": "8c40675f738ae17013d03737b50b480701da61ae2759ad646380a3c038e6ac8d"
+      "sha256": "c2eee51cff4d9dc2288c3b57ceed448e45577a8e0ca9ae84debf1944c26ea4b0"
     },
     "PvPKompass.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.lua",

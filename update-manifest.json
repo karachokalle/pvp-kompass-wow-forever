@@ -15,6 +15,10 @@
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Vendors.lua",
       "sha256": "c2eee51cff4d9dc2288c3b57ceed448e45577a8e0ca9ae84debf1944c26ea4b0"
     },
+    "Talents.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Talents.lua",
+      "sha256": "39c23b2873ecaee6a217c99f2b9ba38e2e7f1e14120a902930598ab4aa4bff82"
+    },
     "PvPKompass.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.lua",
       "sha256": "7a48ca4ab3ea5f213d85bdd35f3cb88a451e025ddd6adace75324b012d9b23e7"

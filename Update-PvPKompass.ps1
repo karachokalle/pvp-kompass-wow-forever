@@ -61,7 +61,7 @@ if ($manifest.addon -ne 'PvPKompass') {
     throw 'Das Manifest gehört nicht zum Addon PvPKompass.'
 }
 
-$allowed = @('Data.lua','VendorData.lua','Vendors.lua','PvPKompass.lua','PvPKompass.toc')
+$allowed = @('Data.lua','VendorData.lua','Vendors.lua','Talents.lua','PvPKompass.lua','PvPKompass.toc')
 if (-not $manifest.files.'Data.lua') { throw 'Das Manifest benötigt files.Data.lua.' }
 $entries = @($manifest.files.PSObject.Properties)
 foreach ($entry in $entries) {

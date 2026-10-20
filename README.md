@@ -2,6 +2,16 @@
 
 Dieses Repository enthält das Addon und den Datenfeed für den externen Updater.
 
+## Talentbäume (Version 0.7.0)
+
+Der Reiter **Kern-Talente** zeigt alle drei Talentbäume nebeneinander, mit den vom Client gelieferten Icons, Reihen, Spalten und belegten/maximalen Rängen. In den vorhandenen Klassenguides ausdrücklich genannte Kern-Talente erhalten einen roten Rahmen, sofern ihr Name im Client zugeordnet werden kann. Das gilt auch für noch nicht erlernte Talente. Die Markierung ist eine Empfehlung und keine vollständige Punkteverteilung. Bei allgemeinen Empfehlungen ohne benannten Talentknoten wird kein Knoten erfunden.
+
+Beim Überfahren mit der Maus erscheint der native Talent-Tooltip; falls dieser nicht verfügbar ist, wird bei vorhandener Zauber-ID der Zauber-Tooltip verwendet. Fehlende Beschreibungen sind als solche gekennzeichnet. Die Ansicht vergibt oder verändert keine Talentpunkte. Die Schaltflächen oben wählen die darunter angezeigte PvP-Empfehlung.
+
+Die eigene Klasse wird direkt aus dem Client gelesen. Andere Klassen werden nach einem Login mit einem entsprechenden Charakter lokal in `PvPKompassDB.talentTrees` gespeichert und sind danach ebenfalls sichtbar. Gespeicherte Ränge gehören zum zuletzt erfassten Charakter dieser Klasse. Snapshots anderer Builds oder Sprachen werden nicht angezeigt. Bei noch fehlenden Daten das originale Talentfenster einmal öffnen. Die Baumdaten bleiben lokal; sie werden nicht nach GitHub hochgeladen.
+
+**Updater-Hinweis:** Für diese Version das neue Client-Updater-Paket entpacken. Ältere Updater vor 0.7.0 erlauben die zusätzliche Datei `Talents.lua` noch nicht.
+
 Version 0.6.2 verwendet für Händler-Gegenstände dieselbe abgesicherte Icon-/Tooltip-Darstellung wie die Boss-Beute im Dungeon-Helper. Sie unterstützt `C_Item.GetItemInfo` sowie ältere Item-Funktionen und zeigt Items auch bei noch nicht geladenen Namen an. Nach manuellem Erfassen werden Suchfilter zurückgesetzt und der erfasste Händler ausgewählt. Ohne Auswahl wird bevorzugt ein Händler mit Gegenständen angezeigt. Die Händlererfassung unterstützt `C_MerchantFrame.GetItemInfo` sowie die älteren Varianten von `GetMerchantItemInfo`.
 
 ## PvP-Händler

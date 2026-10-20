@@ -313,6 +313,7 @@ local function SetSource(url)
 end
 
 local vendorPanel = PvPKompassVendors.CreatePanel(classContent, SetSource)
+local talentPanel = PvPKompassTalents.CreatePanel(classContent)
 
 local function RefreshClassButtons()
     for _, button in ipairs(classButtons) do
@@ -359,13 +360,16 @@ local function Refresh()
     RefreshTabs()
     local useCards = currentTab == "gear" or currentTab == "consumables"
     gearStage:SetShown(useCards)
-    scroll:SetShown(not useCards and currentTab ~= "vendors")
+    scroll:SetShown(not useCards and currentTab ~= "vendors" and currentTab ~= "talents")
     vendorPanel:SetShown(currentTab == "vendors")
+    talentPanel:SetShown(currentTab == "talents")
     for _, button in ipairs(gearModeButtons) do button:SetShown(currentTab == "gear") end
     if currentTab == "gear" then
         RefreshGearStage()
     elseif currentTab == "consumables" then
         RefreshConsumableCards()
+    elseif currentTab == "talents" then
+        talentPanel:Refresh(currentClass, currentTree)
     elseif currentTab ~= "vendors" then
         body:SetText(GetPageText())
     end

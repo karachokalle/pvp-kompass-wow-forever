@@ -6,6 +6,7 @@ local tabs = {
     { key = "consumables", label = "Verbrauch" },
     { key = "gear", label = "BiS / Ausrüstung" },
     { key = "talents", label = "Kern-Talente" },
+    { key = "vendors", label = "PvP-Händler" },
 }
 
 local frame = CreateFrame("Frame", "PvPKompassFrame", UIParent, "BackdropTemplate")
@@ -42,7 +43,7 @@ updateButton:SetPoint("TOPRIGHT", -48, -12)
 updateButton:SetText("Daten aktualisieren")
 updateButton:SetScript("OnClick", function()
     PvPKompass_UpdateRequested = true
-    print("|cff33ff99PvP-Kompass:|r Update vorgemerkt. Spiel vollständig schließen und danach den externen PowerShell-Updater mit einer Wowhead-Datenquelle starten.")
+    print("|cff33ff99PvP-Kompass:|r Update vorgemerkt. Spiel vollständig schließen und danach den externen PvP-Kompass-Updater starten.")
 end)
 
 local classButtons, treeButtons, tabButtons = {}, {}, {}
@@ -311,6 +312,8 @@ local function SetSource(url)
     sourceBox:SetText(url or "")
 end
 
+local vendorPanel = PvPKompassVendors.CreatePanel(classContent, SetSource)
+
 local function RefreshClassButtons()
     for _, button in ipairs(classButtons) do
         button:SetEnabled(button.classToken ~= currentClass)
@@ -356,19 +359,20 @@ local function Refresh()
     RefreshTabs()
     local useCards = currentTab == "gear" or currentTab == "consumables"
     gearStage:SetShown(useCards)
-    scroll:SetShown(not useCards)
+    scroll:SetShown(not useCards and currentTab ~= "vendors")
+    vendorPanel:SetShown(currentTab == "vendors")
     for _, button in ipairs(gearModeButtons) do button:SetShown(currentTab == "gear") end
     if currentTab == "gear" then
         RefreshGearStage()
     elseif currentTab == "consumables" then
         RefreshConsumableCards()
-    else
+    elseif currentTab ~= "vendors" then
         body:SetText(GetPageText())
     end
-    SetSource(currentTab == "consumables" and DATA.sources.prep
+    if currentTab ~= "vendors" then SetSource(currentTab == "consumables" and DATA.sources.prep
         or currentTab == "gear" and DATA.sources.gear
         or currentTab == "stats" and "https://wow-forever.gg/talents/"
-        or class.url)
+        or class.url) end
     scroll:SetVerticalScroll(0)
 end
 
@@ -401,8 +405,8 @@ end
 
 for i, tab in ipairs(tabs) do
     local button = CreateFrame("Button", nil, tabRow, "UIPanelButtonTemplate")
-    button:SetSize(145, 28)
-    button:SetPoint("TOPLEFT", (i - 1) * 150, 0)
+    button:SetSize(140, 28)
+    button:SetPoint("TOPLEFT", (i - 1) * 145, 0)
     button:SetText(tab.label)
     button.tabKey = tab.key
     button:SetScript("OnClick", function(self)

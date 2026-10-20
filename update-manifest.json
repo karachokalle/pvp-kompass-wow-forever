@@ -1,11 +1,27 @@
 {
   "addon": "PvPKompass",
-  "version": "0.5.0",
-  "updated": "2026-10-17",
+  "version": "0.6.0",
+  "updated": "2026-10-20",
   "files": {
     "Data.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Data.lua",
       "sha256": "8199066c8562dbc7d3bc4b2d1e9df911f14459e7e16fe636de0421487a2c2c79"
+    },
+    "VendorData.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/VendorData.lua",
+      "sha256": "3e78af03675bc65da064e7c6fd043c28e99da859ced8e9a003ba4dd67156dedb"
+    },
+    "Vendors.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Vendors.lua",
+      "sha256": "62de5f85dc176467f4ccbd1043a766b4ed65579a9554a5ca25973b886b15218b"
+    },
+    "PvPKompass.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.lua",
+      "sha256": "7a48ca4ab3ea5f213d85bdd35f3cb88a451e025ddd6adace75324b012d9b23e7"
+    },
+    "PvPKompass.toc": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.toc",
+      "sha256": "f34916ab2dae76950c481f79888ccc7fce138a7fa7b10221fd5e4295be50c209"
     }
   },
   "wowheadSources": [

@@ -1,0 +1,5 @@
+updater_config.json
+*.download-*
+*.previous
+.pvpk-update.lock
+Backup-*/

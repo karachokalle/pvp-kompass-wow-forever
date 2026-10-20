@@ -1,10 +1,26 @@
 {
   "addon": "PvPKompass",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "updated": "YYYY-MM-DD",
   "files": {
     "Data.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Data.lua",
+      "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
+    },
+    "VendorData.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/VendorData.lua",
+      "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
+    },
+    "Vendors.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Vendors.lua",
+      "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
+    },
+    "PvPKompass.lua": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.lua",
+      "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
+    },
+    "PvPKompass.toc": {
+      "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.toc",
       "sha256": "REPLACE_WITH_64_CHARACTER_SHA256"
     }
   },

@@ -2,7 +2,7 @@
 ## Title: PvP-Kompass – WoW Forever
 ## Notes: PvP-Übersicht für alle Klassen in WoW Forever
 ## Author: Marco
-## Version: 0.6.1
+## Version: 0.6.2
 ## AllowLoadGameType: camelot
 ## SavedVariables: PvPKompassDB, PvPKompass_UpdateRequested
 

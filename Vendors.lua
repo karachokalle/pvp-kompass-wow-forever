@@ -1,9 +1,42 @@
 local API = {}
 PvPKompassVendors = API
 local catalog = PvPKompassVendorData
-local panel, selectedKey, refreshPanel
+local panel, selectedKey, refreshPanel, selectCapturedVendor
 local merchantOpen, refreshPending = false, false
 local factionFilter
+local requestedItems = {}
+
+-- Same fallback chain as Dungeon Helper's boss items, including the modern API.
+local function ItemDetails(itemID)
+    local reader = C_Item and C_Item.GetItemInfo or GetItemInfo
+    local name, link, quality, texture
+    if type(reader) == "function" then
+        local result = { pcall(reader, itemID) }
+        if result[1] then name, link, quality, texture = result[2], result[3], result[4], result[11] end
+    end
+    if not texture and C_Item and C_Item.GetItemIconByID then
+        local ok, icon = pcall(C_Item.GetItemIconByID, itemID)
+        if ok then texture = icon end
+    end
+    if not texture and GetItemIcon then
+        local ok, icon = pcall(GetItemIcon, itemID)
+        if ok then texture = icon end
+    end
+    if not name and not requestedItems[itemID] and C_Item and C_Item.RequestLoadItemDataByID then
+        requestedItems[itemID] = true
+        pcall(C_Item.RequestLoadItemDataByID, itemID)
+    end
+    return name, link, quality, texture
+end
+
+local function QualityColor(quality)
+    local reader = C_Item and C_Item.GetItemQualityColor or GetItemQualityColor
+    if quality ~= nil and type(reader) == "function" then
+        local ok, r, g, b = pcall(reader, quality)
+        if ok and r and g and b then return r, g, b end
+    end
+    return 1, 0.82, 0
+end
 
 -- Forever uses the structured API; older clients expose a tuple instead.
 local function MerchantItemInfo(index)
@@ -57,7 +90,10 @@ local scanTip = CreateFrame("GameTooltip", "PvPKompassVendorScanTooltip", UIPare
 local function ReadRequirements(index)
     scanTip:SetOwner(UIParent, "ANCHOR_NONE")
     scanTip:ClearLines()
-    scanTip:SetMerchantItem(index)
+    if type(scanTip.SetMerchantItem) ~= "function" or not pcall(scanTip.SetMerchantItem, scanTip, index) then
+        scanTip:Hide()
+        return {}, nil
+    end
     local requirements, reputation = {}, nil
     for i = 2, scanTip:NumLines() do
         local line = _G["PvPKompassVendorScanTooltipTextLeft" .. i]
@@ -99,7 +135,8 @@ function API.Capture(manual)
         local link = GetMerchantItemLink and GetMerchantItemLink(index)
         local itemID = (link and tonumber(link:match("item:(%d+)")))
             or (GetMerchantItemID and GetMerchantItemID(index))
-        if itemName and itemID then
+        if itemID then
+            itemName = itemName or ItemDetails(itemID) or (known[itemID] and known[itemID].name) or ("Gegenstand #" .. itemID)
             local requirements, reputation = ReadRequirements(index)
             local costs, costComplete = {}, true
             if extended then
@@ -114,7 +151,7 @@ function API.Capture(manual)
             items[#items + 1] = {
                 itemID = itemID, name = itemName, link = link, icon = texture,
                 money = price, quantity = quantity or 1, stock = stock, costs = costs,
-                costComplete = costComplete and price ~= nil, requirements = requirements,
+                costComplete = costComplete and price ~= nil and extended ~= nil, requirements = requirements,
                 reputationText = reputation, observed = true, observedAt = observedAt, build = build,
                 reputationStanding = known[itemID] and known[itemID].reputationStanding,
                 reputationFaction = known[itemID] and known[itemID].reputationFaction,
@@ -122,7 +159,8 @@ function API.Capture(manual)
             seen[itemID] = true
         end
     end
-    if #items == 0 then return false, "Gegenstände sind noch nicht geladen. Bitte kurz warten und erneut erfassen." end
+    if #items == 0 then return false, "Der Client meldet " .. total .. " Angebote, liefert aber noch keine Item-IDs. Bitte das Handelsfenster geöffnet lassen und erneut erfassen." end
+    local capturedCount = #items
     local complete = #items == total and GetMerchantFilter and LE_LOOT_FILTER_ALL ~= nil
         and GetMerchantFilter() == LE_LOOT_FILTER_ALL or false
     -- Preserve known rows when a partial response arrives; only a complete scan replaces the inventory.
@@ -138,9 +176,13 @@ function API.Capture(manual)
         observedAt = observedAt, build = build, locale = GetLocale(),
         source = "Client · Händlerfenster",
     }
-    if manual then selectedKey = key end
+    if manual then
+        selectedKey = key
+        factionFilter = UnitFactionGroup("player") or "Alle"
+        if selectCapturedVendor then selectCapturedVendor() end
+    end
     if panel and panel:IsShown() then refreshPanel() end
-    return true, #items .. " Gegenstände von " .. name .. " lokal gespeichert."
+    return true, capturedCount .. " von " .. total .. " Angeboten von " .. name .. " erfasst; " .. #items .. " Einträge im Katalog."
 end
 
 local function AllVendors()
@@ -238,29 +280,26 @@ function API.CreatePanel(parent, setSource)
     local footer = Label(panel, 0, -1, 715, "GameFontDisableSmall")
     footer:ClearAllPoints()
     footer:SetPoint("BOTTOMLEFT", 0, 0)
-    footer:SetText("Teilbestand · Kosten beim Händler inkl. persönlichem Rabatt · Shift-Klick: anprobieren")
+    footer:SetText("v0.6.2 · Teilbestand · Händlerpreise inkl. Rabatt · Shift-Klick: anprobieren")
     local vendorButtons, cards = {}, {}
 
     local function Card(index)
         if cards[index] then return cards[index] end
         local card = CreateFrame("Button", nil, itemChild, "BackdropTemplate")
-        card:SetSize(242, 133)
-        card:SetBackdrop({ bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 8 })
-        card:SetBackdropColor(0.06, 0.07, 0.09, 0.95)
+        card:SetSize(244, 116)
+        card:EnableMouse(true)
+        card:SetBackdrop({ bgFile = "Interface/Tooltips/UI-Tooltip-Background" })
+        card:SetBackdropColor(0.06, 0.07, 0.09, 0.9)
         card.icon = card:CreateTexture(nil, "ARTWORK")
-        card.icon:SetSize(36, 36)
-        card.icon:SetPoint("TOPLEFT", 5, -6)
-        card.slot = card:CreateTexture(nil, "OVERLAY")
-        card.slot:SetTexture("Interface/Buttons/UI-Quickslot2")
-        card.slot:SetSize(62, 62)
-        card.slot:SetPoint("CENTER", card.icon, "CENTER", 0, 0)
-        card.name = Label(card, 47, -7, 188, "GameFontNormalSmall")
+        card.icon:SetSize(34, 34)
+        card.icon:SetPoint("TOPLEFT", 7, -8)
+        card.name = Label(card, 47, -7, 190, "GameFontHighlightSmall")
         card.name:SetHeight(30)
         card.cost = Label(card, 6, -45, 228)
-        card.cost:SetHeight(38)
-        card.rep = Label(card, 6, -85, 228)
-        card.rep:SetHeight(32)
-        card.bundle = Label(card, 6, -118, 228, "GameFontDisableSmall")
+        card.cost:SetHeight(28)
+        card.rep = Label(card, 6, -74, 228)
+        card.rep:SetHeight(28)
+        card.bundle = Label(card, 6, -103, 228, "GameFontDisableSmall")
         card:SetScript("OnEnter", function(self)
             local item = self.item
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -293,7 +332,7 @@ function API.CreatePanel(parent, setSource)
                 local match = query == "" or string.find(string.lower((vendor.name or "") .. " " .. (vendor.location or "")), query, 1, true)
                 if not match then
                     for _, item in ipairs(vendor.items or {}) do
-                        local name = GetItemInfo(item.itemID) or item.name or ""
+                        local name = ItemDetails(item.itemID) or item.name or ""
                         if string.find(string.lower(name .. " " .. item.itemID), query, 1, true) then match = true; break end
                     end
                 end
@@ -315,6 +354,11 @@ function API.CreatePanel(parent, setSource)
             button:Show()
         end
         directoryChild:SetHeight(math.max(1, #visible * 49))
+        if not selected then
+            for _, vendor in ipairs(visible) do
+                if #(vendor.items or {}) > 0 then selected = vendor; break end
+            end
+        end
         selected = selected or visible[1]
         selectedKey = selected and selected.key
         for _, button in ipairs(vendorButtons) do button:SetEnabled(button.key ~= selectedKey) end
@@ -327,33 +371,31 @@ function API.CreatePanel(parent, setSource)
             itemScroll:SetVerticalScroll(0)
             return
         end
-        vendorTitle:SetText(selected.name)
+        vendorTitle:SetText(selected.name .. " · " .. #(selected.items or {}) .. " Gegenstände")
         vendorInfo:SetText((selected.location or "") .. "\n" .. (selected.observedAt and ((selected.complete and "Sortiment erfasst: " or "Teilweise erfasst: ") .. selected.observedAt) or "Online-Teilbestand · Händlerbesuch ergänzt Preise und Sortiment"))
         if setSource then setSource(selected.source or (selected.npcID and ("https://www.wowhead.com/forever/npc=" .. selected.npcID)) or catalog.source) end
         local count = 0
         local vendorMatches = query == "" or string.find(string.lower((selected.name or "") .. " " .. (selected.location or "")), query, 1, true)
         for _, item in ipairs(selected.items or {}) do
-            local name, _, quality, _, _, _, _, _, _, icon = GetItemInfo(item.itemID)
+            local name, link, quality, icon = ItemDetails(item.itemID)
             if vendorMatches or string.find(string.lower((name or item.name or "") .. " " .. item.itemID), query, 1, true) then
                 count = count + 1
                 local card = Card(count)
-                card:SetPoint("TOPLEFT", ((count - 1) % 2) * 248, -math.floor((count - 1) / 2) * 139)
+                card:SetPoint("TOPLEFT", ((count - 1) % 2) * 250, -math.floor((count - 1) / 2) * 122)
                 card.item, card.vendor = item, selected
                 card.icon:SetTexture(icon or item.icon or "Interface/Icons/INV_Misc_QuestionMark")
                 card.name:SetText(name or item.name or ("Gegenstand #" .. item.itemID))
-                local r, g, b = 1, 0.82, 0
-                if quality then r, g, b = GetItemQualityColor(quality) end
+                local r, g, b = QualityColor(quality)
                 card.name:SetTextColor(r, g, b)
                 card.cost:SetText(CostText(item))
                 card.rep:SetText(ReputationText(item))
                 card.bundle:SetText("Pro Kauf: " .. tostring(item.quantity or 1) .. " · ID " .. item.itemID)
                 card:Show()
-                if not name and C_Item and C_Item.RequestLoadItemDataByID then C_Item.RequestLoadItemDataByID(item.itemID) end
             end
         end
         empty:SetText("Noch kein bestätigtes Sortiment hinterlegt.\n\nÖffne diesen PvP-Händler im Spiel. Bekannte Händler werden automatisch erfasst; weitere lassen sich über „Händler vor Ort erfassen“ hinzufügen.\n\nDie Erfassung speichert alle vom Händler angebotenen Gegenstände einschließlich Gold, Ehre, Marken und Anforderungen, soweit vom Client geliefert.")
         empty:SetShown(count == 0)
-        itemChild:SetHeight(math.max(180, math.ceil(count / 2) * 139))
+        itemChild:SetHeight(math.max(180, math.ceil(count / 2) * 122))
         local maximum = math.max(0, itemChild:GetHeight() - itemScroll:GetHeight())
         if itemScroll:GetVerticalScroll() > maximum then itemScroll:SetVerticalScroll(maximum) end
     end
@@ -365,7 +407,12 @@ function API.CreatePanel(parent, setSource)
         refreshPanel()
     end)
     search:SetScript("OnTextChanged", function() directory:SetVerticalScroll(0); itemScroll:SetVerticalScroll(0); refreshPanel() end)
-    panel:SetScript("OnShow", refreshPanel)
+    selectCapturedVendor = function()
+        search:SetText("")
+        directory:SetVerticalScroll(0)
+        itemScroll:SetVerticalScroll(0)
+    end
+    panel:SetScript("OnShow", function() requestedItems = {}; refreshPanel() end)
     return panel
 end
 
@@ -374,6 +421,7 @@ events:RegisterEvent("MERCHANT_SHOW")
 events:RegisterEvent("MERCHANT_UPDATE")
 events:RegisterEvent("MERCHANT_CLOSED")
 events:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+pcall(events.RegisterEvent, events, "ITEM_DATA_LOAD_RESULT")
 local function QueueRefresh()
     if refreshPending then return end
     refreshPending = true
@@ -383,9 +431,12 @@ local function QueueRefresh()
         if panel and panel:IsShown() then refreshPanel() end
     end)
 end
-events:SetScript("OnEvent", function(_, event, _, success)
+events:SetScript("OnEvent", function(_, event, itemID, success)
     if event == "MERCHANT_CLOSED" then merchantOpen = false; return end
     if event == "MERCHANT_SHOW" then merchantOpen = true end
-    if event == "GET_ITEM_INFO_RECEIVED" and not success then return end
+    if event == "GET_ITEM_INFO_RECEIVED" or event == "ITEM_DATA_LOAD_RESULT" then
+        if success == false then return end
+        if itemID then requestedItems[itemID] = true end
+    end
     if merchantOpen or (panel and panel:IsShown()) then QueueRefresh() end
 end)

@@ -2,7 +2,7 @@
 
 Dieses Repository enthält das Addon und den Datenfeed für den externen Updater.
 
-Version 0.6.1 behebt die Händlererfassung auf Clients mit `C_MerchantFrame.GetItemInfo` und unterstützt weiterhin die älteren Varianten von `GetMerchantItemInfo`. Kaufstückzahl und Zusatzkosten werden aus dem jeweiligen Rückgabeformat gelesen.
+Version 0.6.2 verwendet für Händler-Gegenstände dieselbe abgesicherte Icon-/Tooltip-Darstellung wie die Boss-Beute im Dungeon-Helper. Sie unterstützt `C_Item.GetItemInfo` sowie ältere Item-Funktionen und zeigt Items auch bei noch nicht geladenen Namen an. Nach manuellem Erfassen werden Suchfilter zurückgesetzt und der erfasste Händler ausgewählt. Ohne Auswahl wird bevorzugt ein Händler mit Gegenständen angezeigt. Die Händlererfassung unterstützt `C_MerchantFrame.GetItemInfo` sowie die älteren Varianten von `GetMerchantItemInfo`.
 
 ## PvP-Händler
 

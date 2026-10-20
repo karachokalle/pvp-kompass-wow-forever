@@ -7,6 +7,7 @@ on:
       - Data.lua
       - VendorData.lua
       - Vendors.lua
+      - Talents.lua
       - PvPKompass.lua
       - PvPKompass.toc
       - .github/workflows/publish-update-manifest.yml
@@ -48,7 +49,7 @@ jobs:
                   "url": f"https://raw.githubusercontent.com/{os.environ['REPOSITORY']}/main/{name}",
                   "sha256": hashlib.sha256((root / name).read_bytes()).hexdigest(),
               }
-              for name in ("Data.lua", "VendorData.lua", "Vendors.lua", "PvPKompass.lua", "PvPKompass.toc")
+              for name in ("Data.lua", "VendorData.lua", "Vendors.lua", "Talents.lua", "PvPKompass.lua", "PvPKompass.toc")
           }
           manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY

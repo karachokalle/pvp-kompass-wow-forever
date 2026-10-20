@@ -5,6 +5,29 @@ local panel, selectedKey, refreshPanel
 local merchantOpen, refreshPending = false, false
 local factionFilter
 
+-- Forever uses the structured API; older clients expose a tuple instead.
+local function MerchantItemInfo(index)
+    if C_MerchantFrame and type(C_MerchantFrame.GetItemInfo) == "function" then
+        local info = C_MerchantFrame.GetItemInfo(index)
+        if info then
+            return info.name, info.texture, info.price, info.stackCount,
+                info.numAvailable, info.isUsable, info.hasExtendedCost
+        end
+        return
+    end
+    if type(GetMerchantItemInfo) == "function" then
+        local function Normalize(...)
+            local name, texture, price, quantity, stock, sixth, seventh, eighth = ...
+            if select("#", ...) >= 8 then
+                -- isPurchasable, isUsable, extendedCost
+                return name, texture, price, quantity, stock, seventh, eighth
+            end
+            return name, texture, price, quantity, stock, sixth, seventh
+        end
+        return Normalize(GetMerchantItemInfo(index))
+    end
+end
+
 local function Cache()
     PvPKompassDB = PvPKompassDB or {}
     PvPKompassDB.vendors = PvPKompassDB.vendors or {}
@@ -58,7 +81,12 @@ function API.Capture(manual)
     local key, seed, id, name = MerchantKey()
     if not key then return false, "Bitte zuerst das Handelsfenster eines PvP-Händlers öffnen." end
     if not seed and not Cache()[key] and not manual then return false end
-    if not GetMerchantNumItems or not GetMerchantItemInfo then return false, "Händlerdaten sind im Client nicht verfügbar." end
+    local hasInfo = (C_MerchantFrame and type(C_MerchantFrame.GetItemInfo) == "function")
+        or type(GetMerchantItemInfo) == "function"
+    if type(GetMerchantNumItems) ~= "function" or not hasInfo then
+        local _, build = GetBuildInfo()
+        return false, "Händler-Schnittstelle fehlt (Build " .. tostring(build) .. "). Bitte PvP-Kompass aktualisieren."
+    end
     local total = GetMerchantNumItems()
     if not total or total < 1 then return false, "Das Sortiment wurde noch nicht vom Client geladen." end
     local items, seen = {}, {}
@@ -67,9 +95,10 @@ function API.Capture(manual)
     local _, build = GetBuildInfo()
     local observedAt = date("%d.%m.%Y %H:%M")
     for index = 1, total do
-        local itemName, texture, price, quantity, stock, usable, extended = GetMerchantItemInfo(index)
-        local link = GetMerchantItemLink(index)
-        local itemID = link and tonumber(link:match("item:(%d+)"))
+        local itemName, texture, price, quantity, stock, usable, extended = MerchantItemInfo(index)
+        local link = GetMerchantItemLink and GetMerchantItemLink(index)
+        local itemID = (link and tonumber(link:match("item:(%d+)")))
+            or (GetMerchantItemID and GetMerchantItemID(index))
         if itemName and itemID then
             local requirements, reputation = ReadRequirements(index)
             local costs, costComplete = {}, true

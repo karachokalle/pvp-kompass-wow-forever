@@ -1,6 +1,6 @@
 {
   "addon": "PvPKompass",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "updated": "2026-10-20",
   "files": {
     "Data.lua": {
@@ -13,7 +13,7 @@
     },
     "Vendors.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Vendors.lua",
-      "sha256": "62de5f85dc176467f4ccbd1043a766b4ed65579a9554a5ca25973b886b15218b"
+      "sha256": "20096370f99e5ced8253a980e7e9450e77a1e440b1e01af8a50118074e071c2a"
     },
     "PvPKompass.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.lua",
@@ -21,7 +21,7 @@
     },
     "PvPKompass.toc": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/PvPKompass.toc",
-      "sha256": "f34916ab2dae76950c481f79888ccc7fce138a7fa7b10221fd5e4295be50c209"
+      "sha256": "c506ba715f57207a053e5f2c0b8ebef8f665c335e66b52598b735badc5aa33ce"
     }
   },
   "wowheadSources": [

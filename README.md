@@ -2,6 +2,8 @@
 
 Dieses Repository enthält das Addon und den Datenfeed für den externen Updater.
 
+Version 0.6.1 behebt die Händlererfassung auf Clients mit `C_MerchantFrame.GetItemInfo` und unterstützt weiterhin die älteren Varianten von `GetMerchantItemInfo`. Kaufstückzahl und Zusatzkosten werden aus dem jeweiligen Rückgabeformat gelesen.
+
 ## PvP-Händler
 
 Der Reiter **PvP-Händler** bietet Fraktionsfilter, Händlerliste und Suche nach Namen, Ort und Item-ID. Gegenstände werden mit Client-Icons, Qualitätsfarben und originalen Item-Tooltips angezeigt. Shift-Klick öffnet die Anprobe. Kosten stehen pro Kauf neben Rufanforderungen; PvP-Rang, Stufe und Klassenbeschränkungen bleiben zusätzlich im Tooltip sichtbar.

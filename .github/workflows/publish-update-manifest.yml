@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - Data.lua
+      - VendorData.lua
+      - Vendors.lua
+      - PvPKompass.lua
       - PvPKompass.toc
       - .github/workflows/publish-update-manifest.yml
 
@@ -36,14 +39,16 @@ jobs:
           if not match:
               raise SystemExit("PvPKompass.toc does not declare ## Version")
 
-          data = (root / "Data.lua").read_bytes()
           manifest_path = root / "update-manifest.json"
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
           manifest["version"] = match.group(1)
           manifest["updated"] = datetime.date.today().isoformat()
-          manifest["files"]["Data.lua"] = {
-              "url": f"https://raw.githubusercontent.com/{os.environ['REPOSITORY']}/main/Data.lua",
-              "sha256": hashlib.sha256(data).hexdigest(),
+          manifest["files"] = {
+              name: {
+                  "url": f"https://raw.githubusercontent.com/{os.environ['REPOSITORY']}/main/{name}",
+                  "sha256": hashlib.sha256((root / name).read_bytes()).hexdigest(),
+              }
+              for name in ("Data.lua", "VendorData.lua", "Vendors.lua", "PvPKompass.lua", "PvPKompass.toc")
           }
           manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
           PY

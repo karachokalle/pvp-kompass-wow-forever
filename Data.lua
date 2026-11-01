@@ -10,6 +10,7 @@ PvPKompassData = {
         rank = "https://worldofwarcraft.blizzard.com/en-us/news/24303316/how-pvp-progression-in-world-of-warcraft-forever-works",
         wowheadPvp = "https://www.wowhead.com/forever/guide/pvp-overview-ranking-rewards",
         wowheadGuides = "https://www.wowhead.com/forever/guides",
+        foreverChanges = "https://foreverchanges.pro/",
     },
     classOrder = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" },
     classes = {

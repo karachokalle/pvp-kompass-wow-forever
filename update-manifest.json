@@ -1,11 +1,11 @@
 {
   "addon": "PvPKompass",
   "version": "0.7.1",
-  "updated": "2026-10-20",
+  "updated": "2026-11-01",
   "files": {
     "Data.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/Data.lua",
-      "sha256": "8199066c8562dbc7d3bc4b2d1e9df911f14459e7e16fe636de0421487a2c2c79"
+      "sha256": "0dc307730cc1105b6b827e78796a2266a555f56531596510f5b7969e8b90df32"
     },
     "VendorData.lua": {
       "url": "https://raw.githubusercontent.com/karachokalle/pvp-kompass-wow-forever/main/VendorData.lua",
@@ -36,6 +36,12 @@
     {
       "title": "Forever Guides",
       "url": "https://www.wowhead.com/forever/guides"
+    }
+  ],
+  "additionalSources": [
+    {
+      "title": "ForeverChanges",
+      "url": "https://foreverchanges.pro/"
     }
   ]
 }

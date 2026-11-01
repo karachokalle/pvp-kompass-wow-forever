@@ -45,3 +45,7 @@ Im Addon auf **Daten aktualisieren** klicken, WoW vollständig schließen und `U
 Die Adresse des öffentlichen GitHub-Feeds ist im Updater hinterlegt. Der Updater prüft den SHA-256-Wert und legt vor dem Austausch ein Backup der vorhandenen Datei an.
 
 Wenn `Data.lua` oder die Addon-Version geändert wird, aktualisiert GitHub Actions das Manifest samt Prüfsumme. Die Empfehlungen müssen weiterhin anhand der verlinkten Guides gepflegt werden; dieser Workflow aktualisiert die Veröffentlichung der Daten und liest die Guides nicht automatisch aus.
+
+## Zusätzliche Datenquelle: ForeverChanges
+
+[ForeverChanges](https://foreverchanges.pro/) ist eine vom Nutzer akzeptierte Quelle für Forever-Klassen, Talentbäume, Fähigkeiten, Items, BiS und Änderungen. Bei Übernahmen werden Build, Hotfixstand und Levelbereich dokumentiert. Ausgelesene Clientdaten werden als solche gekennzeichnet; Classic-Vergleichswerte gelten nicht automatisch für Forever.

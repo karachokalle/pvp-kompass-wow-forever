@@ -2,7 +2,7 @@
 -- separate from the UI so beta and launch recommendations can be updated.
 PvPKompassData = {
     game = "World of Warcraft: Forever",
-    build = "Beta, Datenstand 17.10.2026",
+    build = "Beta-Basis 17.10.2026; Teilkorrekturen 23.11.2026",
     betaLevel = 30,
     sources = {
         prep = "https://wowhonor.com/guides/pvp-preparation/",
@@ -10,12 +10,13 @@ PvPKompassData = {
         rank = "https://worldofwarcraft.blizzard.com/en-us/news/24303316/how-pvp-progression-in-world-of-warcraft-forever-works",
         wowheadPvp = "https://www.wowhead.com/forever/guide/pvp-overview-ranking-rewards",
         wowheadGuides = "https://www.wowhead.com/forever/guides",
+        hotfix20261123 = "https://us.forums.blizzard.com/en/wow/t/2403040/15",
         foreverChanges = "https://foreverchanges.pro/",
     },
     classOrder = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" },
     classes = {
         WARRIOR = { name = "Krieger", url = "https://wowhonor.com/guides/classes/warrior/", defaultTree = 1, trees = {
-            { name = "Waffen", role = "Nahkampfschaden und Heilungsverringerung", stats = "Kraft und Ausdauer als Basis. Trefferwertung hilft, Angriffe zuverlässig anzubringen; Waffenschaden ist für deine Druckfenster zentral.", talents = "PvP-Kern: Verbesserte Taktikbeherrschung für mehr Wut beim Haltungswechsel. Spearing Strike ist ein früher Forever-Talentpunkt-Meilenstein; Mortal Strike kommt erst ab Stufe 40." },
+            { name = "Waffen", role = "Nahkampfschaden und Heilungsverringerung", stats = "Kraft und Ausdauer als Basis. Trefferwertung hilft, Angriffe zuverlässig anzubringen; Waffenschaden ist für deine Druckfenster zentral.", talents = "PvP-Kern: Verbesserte Taktikbeherrschung für mehr Wut beim Haltungswechsel. Spearing Strike ist ein früher Forever-Talentpunkt-Meilenstein; Mortal Strike kommt erst ab Stufe 40. Seit dem Hotfix vom 23.11.2026 lässt sich Mortal Strike nur mit investiertem Talentpunkt nutzen, auch wenn es noch im Zauberbuch steht." },
             { name = "Furor", role = "Zwei Waffen und anhaltender Nahkampfdruck", stats = "Kraft, Trefferwertung und Ausdauer. Für Zweihand- oder Beidhändig-Builds die Ausrüstung passend zum Waffentalent wählen.", talents = "PvP-Kern: Raging Blows auf 16 Punkten senkt die Wutkosten von Spalten und Wirbelwind. Death Wish gibt Druck und Furchtimmunität, erhöht aber den erlittenen Schaden." },
             { name = "Schutz", role = "Defensive Talente als PvP-Beimischung", stats = "Ausdauer und Rüstung für Überleben; Kraft und Trefferwertung halten den Gegenschaden relevant.", talents = "PvP-Kern: Iron Will verkürzt Betäubungen und Furcht. Verbesserte Entwaffnung senkt deren Abklingzeit; Vanguard auf 16 Punkten erlaubt Sturmangriff in Verteidigungshaltung." },
         } },
@@ -37,7 +38,7 @@ PvPKompassData = {
         PRIEST = { name = "Priester", url = "https://wowhonor.com/guides/classes/priest/", defaultTree = 1, trees = {
             { name = "Disziplin", role = "Schilde, Heilung und vielseitiger Druck", stats = "Zaubermacht/Heilung und Intelligenz; Ausdauer schützt dich vor Fokus. Spirit unterstützt Mana-Regeneration.", talents = "PvP-Kern: Soul Warding auf 16 Punkten entfernt die Abklingzeit von Machtwort: Schild. Penance auf 21 Punkten heilt Verbündete oder schädigt Gegner; Mental Agility spart Mana." },
             { name = "Heilig", role = "Direkte Heilung und Gruppenunterstützung", stats = "Heilzaubermacht und Intelligenz für stärkere Heilungen; Ausdauer und Willenskraft helfen beim Überleben und Manahaushalt.", talents = "PvP-Kern: Binding Heal kommt auf 16 Punkten und heilt dich sowie ein Ziel. Twilight Focus schützt Zauber vor Unterbrechung durch erlittenen Schaden." },
-            { name = "Schatten", role = "Schattenschaden über Zeit und Kontrolle", stats = "Zaubermacht, Trefferwertung und Ausdauer; Intelligenz und Willenskraft helfen bei Mana und Ausdauer im Kampf.", talents = "PvP-Kern: Schattenzauber und Schaden über Zeit. Furcht, Stille und die in Forever für Priester verfügbaren Volksfähigkeiten sind wichtige Werkzeuge; prüfe die aktuelle Talentverteilung über die Quelle." },
+            { name = "Schatten", role = "Schattenschaden über Zeit und Kontrolle", stats = "Zaubermacht, Trefferwertung und Ausdauer; Intelligenz und Willenskraft helfen bei Mana und Ausdauer im Kampf.", talents = "PvP-Kern: Schattenzauber und Schaden über Zeit. Furcht, Stille und die in Forever für Priester verfügbaren Volksfähigkeiten sind wichtige Werkzeuge; prüfe die aktuelle Talentverteilung über die Quelle. Hotfix 23.11.2026: Chastise ist in Schattenform nutzbar; Dark Inspiration gewährt auch bei Aktivierung durch Mind Flay den vorgesehenen Willenskraftbonus." },
         } },
         SHAMAN = { name = "Schamane", url = "https://wowhonor.com/guides/classes/shaman/", defaultTree = 2, trees = {
             { name = "Elementarkampf", role = "Zauberschaden, Reichweite und Wurzeln", stats = "Zaubermacht, Trefferwertung und Ausdauer; Intelligenz unterstützt deinen Manavorrat.", talents = "PvP-Kern: Elemental Alacrity beschleunigt Blitzschlag und Kettenblitz. Earthbound auf 21 Punkten wurzelt Gegner beim Platzieren des Totems; Lava Burst ist der 31-Punkte-Abschluss." },
@@ -52,11 +53,11 @@ PvPKompassData = {
         WARLOCK = { name = "Hexenmeister", url = "https://wowhonor.com/guides/classes/warlock/", defaultTree = 2, trees = {
             { name = "Gebrechen", role = "Schaden über Zeit, Flüche und Entzug", stats = "Zaubermacht, Ausdauer und Trefferwertung. Ausdauer stärkt Life Tap und hilft gegen Fokus.", talents = "PvP-Kern: Curse of Exhaustion auf 16 Punkten verlangsamt dein Ziel. Malediction und Soul Siphon erhöhen den Druck durch Schaden über Zeit und Entzug." },
             { name = "Dämonologie", role = "Dämonenstärke und Schadensumleitung", stats = "Zaubermacht, Ausdauer und Trefferwertung; Dämonen skalieren in Forever mit deinen Werten.", talents = "PvP-Einstieg für die Beta-Stufe 30: Demonic Sacrifice ist auf 11 Punkten, Fel Domination auf 16 und Soul Link auf 21 Punkten erreichbar. Soul Link teilt Schaden mit deinem Dämon." },
-            { name = "Zerstörung", role = "Schatten-/Feuer-Burst mit Dämonenunterstützung", stats = "Zaubermacht, Trefferwertung und Ausdauer; priorisiere Überleben, damit du Zauber wirken kannst.", talents = "PvP-Kern: Bane- und Fluchdruck mit direkten Schatten- und Feuerschäden verbinden. Felhunter-Kontrolle ergänzt den Druck, ist aber erst ab Stufe 36 verfügbar." },
+            { name = "Zerstörung", role = "Schatten-/Feuer-Burst mit Dämonenunterstützung", stats = "Zaubermacht, Trefferwertung und Ausdauer; priorisiere Überleben, damit du Zauber wirken kannst.", talents = "PvP-Kern: Bane- und Fluchdruck mit direkten Schatten- und Feuerschäden verbinden. Felhunter-Kontrolle ergänzt den Druck, ist aber erst ab Stufe 36 verfügbar. Hotfix 23.11.2026: Intensity wirkt auch auf Incinerate." },
         } },
         DRUID = { name = "Druide", url = "https://wowhonor.com/guides/classes/druid/", defaultTree = 2, trees = {
             { name = "Gleichgewicht", role = "Zauberschaden, Wurzeln und Kontrolle", stats = "Zaubermacht, Trefferwertung und Ausdauer. Ausdauer ist wichtig, wenn Nahkämpfer dich erreichen.", talents = "PvP-Kern: Improved Entangling Roots und Overgrowth halten Angreifer auf Abstand. Insect Swarm auf 16 Punkten senkt die Trefferchance des Ziels." },
-            { name = "Wildheit", role = "Formwechsel, Nahkampfschaden und Mobilität", stats = "Beweglichkeit und Waffenschaden für Katze; Ausdauer für Überleben. Waffen-DPS wirkt in Katzen- und Bärenform.", talents = "PvP-Einstieg für die Beta-Stufe 30: Feral Charge, Shifting Power auf 16 Punkten und Leader of the Pack auf 21 Punkten. Shifting Power ersetzt Tiger's Fury und gibt Energie sofort zurück." },
+            { name = "Wildheit", role = "Formwechsel, Nahkampfschaden und Mobilität", stats = "Beweglichkeit und Waffenschaden für Katze; Ausdauer für Überleben. Waffen-DPS wirkt in Katzen- und Bärenform. Hotfix 23.11.2026: Der Vierersetbonus von Feralheart gewährt 4 Energie pro Sekunde für 5 Sekunden.", talents = "PvP-Einstieg für die Beta-Stufe 30: Feral Charge, Shifting Power auf 16 Punkten und Leader of the Pack auf 21 Punkten. Shifting Power ersetzt Tiger's Fury und gibt Energie sofort zurück." },
             { name = "Wiederherstellung", role = "Heilung über Zeit und Gruppenheilung", stats = "Heilzaubermacht, Intelligenz und Ausdauer; Willenskraft hilft bei längeren Kämpfen.", talents = "PvP-Kern: Gift of the Earthmother auf 11 Punkten verkürzt den globalen Cooldown; Swiftmend auf 16 Punkten ist eine Sofortheilung, ohne den HoT zu verbrauchen." },
         } },
     },
